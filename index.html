@@ -100,6 +100,7 @@ footer{background:#080808;border-top:1px solid rgba(204,0,0,0.2);padding:48px 24
 .flash-preview{grid-template-columns:repeat(3,1fr);}
 }
 @media(prefers-reduced-motion:reduce){*{transition:none!important;}}
+@keyframes _livePulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(1.4)}}
 </style>
 </head>
 <body>
@@ -130,7 +131,8 @@ footer{background:#080808;border-top:1px solid rgba(204,0,0,0.2);padding:48px 24
   <div class="hero-inner">
     <div class="hero-text">
       <span class="tag">Where Tattoo Culture Meets Bitcoin</span>
-      <h1>Tattoos.<span>Art.</span>Ordinals.</h1>
+      <div id="live-indicator" style="display:inline-flex;align-items:center;gap:6px;font-size:12px;color:#ef4444;font-weight:700;margin-bottom:12px;letter-spacing:0.5px;"><span style="width:7px;height:7px;background:#ef4444;border-radius:50%;animation:_livePulse 2s infinite;display:inline-block;"></span>LIVE&nbsp;·&nbsp;<span id="live-ts">--:--:--</span></div>
+<h1>Tattoos.<span>Art.</span>Ordinals.</h1>
       <p>Browse tattoo flash art, find your style, and buy designs as Bitcoin Ordinal inscriptions. The future of ink ownership lives on-chain.</p>
       <div class="cta-row">
         <a href="#marketplace" class="btn-red">Browse Flash Art</a>
@@ -234,6 +236,23 @@ footer{background:#080808;border-top:1px solid rgba(204,0,0,0.2);padding:48px 24
 <script src="https://spunk.codes/cross-promo.js" defer></script>
 <script>
 function toggleMobileNav(){var btn=document.getElementById('hamburgerBtn');var nav=document.getElementById('mobileNav');btn.classList.toggle('open');nav.classList.toggle('open');document.body.style.overflow=nav.classList.contains('open')?'hidden':'';}
+</script>
+<script>
+/* 10-second content heartbeat */
+(function(){
+  var _n=0;
+  function _hb(){
+    _n++;
+    var el=document.getElementById('live-ts');
+    if(el) el.textContent=new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+    var rotators=document.querySelectorAll('[data-rotate]');
+    rotators.forEach(function(r){
+      try{var arr=JSON.parse(r.getAttribute('data-rotate'));if(arr.length)r.textContent=arr[_n%arr.length];}catch(e){}
+    });
+  }
+  setInterval(_hb,10000);
+  setTimeout(_hb,500);
+})();
 </script>
 </body>
 </html>
